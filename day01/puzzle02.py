@@ -14,16 +14,13 @@ def find_calibration_values(input):
         "zero": "0"
     }
 
-    index = 0
-
-    for char in input:
-        if char.isdigit():
-            found_values.append(char)
+    for i in range(len(input)):
+        if input[i].isdigit():
+            found_values.append(input[i])
         else:
             for key, value in num_dict.items():
-                if input[index:].startswith(key):
+                if input[i:].startswith(key):
                     found_values.append(value)
-        index += 1
 
     first_and_last = [found_values[0], found_values[-1]]
     return int("".join(first_and_last))
