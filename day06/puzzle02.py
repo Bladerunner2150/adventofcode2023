@@ -1,36 +1,22 @@
-from functools import reduce
-import operator
+time = 0
+distance = 0
 
-times = []
-distances = []
-ways_to_win = [] # For each race, calculate the number of ways to win
-
-def fill_arrays(line):
-    if line.startswith("Time:"):
-        times.append(int(line.split(":")[1].replace(" ", "")))
-    elif line.startswith("Distance:"):
-        distances.append(int(line.split(":")[1].replace(" ", "")))
-
-def calculate_ways_to_win_for_race(index):
-    time = times[index]
-    distance_to_reach = distances[index] + 1
-    print(f"Calculating race {i + 1} with distance to reach: {distance_to_reach}")
-    can_finish = [] # Array of booleans per millisecond
+def calculate_ways_to_win_for_race():
+    distance_to_reach = distance + 1
+    wins = 0
     possible_speed = 1
-    for holding_milli_second in range(1, time): # Ignore 0 milliseconds and the last millisecond
-        possible_distance = possible_speed * (time - holding_milli_second)
+    for holding_millisecond in range(1, time): # Ignore 0 milliseconds and the last millisecond
+        possible_distance = possible_speed * (time - holding_millisecond)
         if possible_distance >= distance_to_reach:
-            can_finish.append(True)
-        else:
-            can_finish.append(False)
+            wins += 1
         possible_speed += 1
-    ways_to_win.append(sum(can_finish))
+    return wins
 
 with open("input.txt", "r") as file:
     for line in file:
-        fill_arrays(line.strip())
+        if line.strip().startswith("Time:"):
+            time = int(line.split(":")[1].replace(" ", ""))
+        elif line.strip().startswith("Distance:"):
+            distance = int(line.split(":")[1].replace(" ", ""))
 
-for i in range(len(times)):
-    calculate_ways_to_win_for_race(i)
-
-print(reduce(operator.mul, ways_to_win))
+print(calculate_ways_to_win_for_race())
