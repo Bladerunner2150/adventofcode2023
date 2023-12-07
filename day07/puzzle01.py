@@ -46,7 +46,7 @@ class Hand:
                 elif count == 5:
                     hand_type = HandType.FIVE_OF_A_KIND
             elif len(duplicates.items()) == 2:
-                if count == 2:
+                if 3 not in duplicates.values() and count == 2:
                     hand_type = HandType.TWO_PAIRS
                 elif count == 3:
                     hand_type = HandType.FULL_HOUSE
@@ -69,7 +69,6 @@ def fill_hands(input):
 def calculate_winnings():
     global solution
     for i in range(len(sorted_hands)):
-        print(f"Hand: {sorted_hands[i].cards};Bid: {sorted_hands[i].bid};Rank: {i + 1};Type: {sorted_hands[i].type}")
         solution += sorted_hands[i].bid * (i + 1)
     
 with open("input.txt", "r") as file:
@@ -77,6 +76,5 @@ with open("input.txt", "r") as file:
         fill_hands(line.strip())
 
 sorted_hands = sorted(hands, key=lambda hand: (hand.type.value, hand.cards))
-# TODO: Result for actual input is too low, need to find out why (sample input is correct)
 calculate_winnings()
 print(solution)
